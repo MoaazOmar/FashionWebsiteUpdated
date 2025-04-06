@@ -1,0 +1,79 @@
+<div class="orders-container">
+  <h1 class="fashion-title">Your Orders</h1>
+  
+  <!-- Not Logged In State -->
+  <div *ngIf="!isLoggedIn" class="no-orders text-center">
+    <div class="animate-float wiggle-animation" [innerHTML]="notLoggedInSvg"></div>
+    <h2>Sign In to View Orders</h2>
+    <p>Please log in to your account to view your order history and track your deliveries.</p>
+    <button class="start-shopping-btn" (click)="navigateToLogin()">Login / Register</button>
+  </div>
+
+  <!-- Logged In, No Orders State -->
+  <div *ngIf="isLoggedIn && orders.length === 0" class="no-orders text-center">
+    <div class="animate-float wiggle-animation" [innerHTML]="noOrdersSvg"></div>
+    <h2>No Orders Yet</h2>
+    <p>You haven't placed any orders yet. Start shopping to fill your wardrobe with the latest fashion!</p>
+    <button class="start-shopping-btn" (click)="navigateToShopping()">Browse Collection</button>
+  </div>
+
+  <!-- Orders List -->
+  <div class="orders-grid" *ngIf="isLoggedIn && orders.length > 0">
+    <div *ngFor="let order of orders" class="order-card" (click)="selectedOrder = order">
+      <div class="order-header">
+        <div class="order-meta">
+          <div class="order-id">ORDER #{{ order._id | uppercase }}</div>
+          <div class="order-date">{{ order.timestamp | date:'mediumDate' }}</div>
+        </div>
+        <div class="order-status" [ngClass]="order.status.toLowerCase()">
+          {{ order.status }}
+        </div>
+        <div class="order-total">
+          ${{ order.totalPrice | number:'1.2-2' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Details Modal -->
+  <div *ngIf="selectedOrder" class="modal-overlay" (click)="selectedOrder = null">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Order Details</h2>
+        <button class="close-btn" (click)="selectedOrder = null">×</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="detail-row">
+          <span>Customer:</span>
+          <p>{{ selectedOrder.customerName }}</p>
+        </div>
+        <div class="detail-row">
+          <span>Delivery Address:</span>
+          <p>{{ selectedOrder.address }}</p>
+        </div>
+        
+        <div class="items-list">
+          <h3>Items ({{ selectedOrder.items.length }})</h3>
+          <div *ngFor="let item of selectedOrder.items" class="fashion-item">
+            <div class="item-image">
+              <img [src]="item.image" [alt]="item.name">
+            </div>
+            <div class="item-info">
+              <h4>{{ item.name }}</h4>
+              <p>Product ID: {{ item.productID }}</p>
+              <div class="item-meta">
+                <span>${{ item.price }} x {{ item.amount }}</span>
+                <span class="item-status">{{ item.status }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="download-btn" (click)="downloadPDF(selectedOrder)">
+          Download Invoice
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

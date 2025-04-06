@@ -1,0 +1,60 @@
+<app-slider-fashion></app-slider-fashion>
+<div class="fashion-carousel" #carousel>
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" #progressBar></div>
+  </div>
+
+  <!-- Slides -->
+  <div class="slides-container">
+    <div *ngFor="let product of carouselProducts; let i = index" class="slide"
+      [ngClass]="{'active': i === currentSlideIndex, 'previous': i === previousSlideIndex}"
+      [@slideAnimation]="i === currentSlideIndex ? 'active' : (i === previousSlideIndex ? 'previous' : 'inactive')">
+      <img [src]="product.image[0]" [alt]="product.name" class="slide-image">
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <span class="slide-category">{{ product.category }}</span>
+        <h2 class="slide-title">{{ product.name }}</h2>
+        <p class="slide-description">{{ product.description || 'Discover this stylish item from our collection.' }}</p>
+      </div>
+      <div class="slide-badge"
+        [ngClass]="{'most-popular': i === 0, 'trending': i === 1, 'new-arrival': i === 2, 'featured': i >= 3}">
+        {{ i === 0 ? 'Most Popular' : i === 1 ? 'Trending' : i === 2 ? 'New Arrival' : 'Featured' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicators -->
+  <div class="carousel-indicators">
+    <div *ngFor="let product of carouselProducts; let i = index" class="indicator"
+      [ngClass]="{'active': i === currentSlideIndex}" (click)="goToSlide(i)"></div>
+  </div>
+
+  <!-- Thumbnails -->
+  <div class="thumbnails-container">
+    <div *ngFor="let product of carouselProducts; let i = index" class="thumbnail"
+      [ngClass]="{'active': i === currentSlideIndex}" (click)="goToSlide(i)">
+      <img [src]="product.image[0]" [alt]="product.name">
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="carousel-controls">
+    <button class="carousel-btn btn btn-dark" id="prevBtn" (click)="prevSlide()">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="carousel-btn btn btn-dark" id="nextBtn" (click)="nextSlide()">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Additional Components -->
+<app-products-carousel></app-products-carousel>
+<app-theater></app-theater>
+<div class="products-button">
+  <button (click)="goToProducts()">
+    <span class="button-text">View All Products</span>
+    <span class="assembly-line"></span>
+  </button>
+</div>
