@@ -44,8 +44,14 @@
           <p class="category">{{item.category | titlecase}}</p>
           <div class="price-row">
             <span class="price">${{item.price | number:'1.2-2'}}</span>
-            <button class="add-to-cart"(click)="addToCartAndRemove(item)">Add to Cart</button>
-          </div>
+            <button 
+            class="add-to-cart" 
+            [disabled]="item.stock <= 0" 
+            (click)="addToCartAndRemove(item)"
+            [class.disabled-btn]="item.stock <= 0">
+            {{ item.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+          </button>         
+         </div>
         </div>
       </div>
     </ng-container>

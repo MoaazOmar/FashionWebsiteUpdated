@@ -109,7 +109,7 @@
     </div>
     <form (submit)="addToCart(product)">
       <input type="number" [(ngModel)]="product.amount" name="amount" class="form-control mb-2" placeholder="Quantity" min="1">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" [disabled]="product.stock === 0">
         <i class="fa-solid fa-cart-plus"></i>
       </button>
     </form>

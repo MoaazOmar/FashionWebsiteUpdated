@@ -1,13 +1,13 @@
 {
-  "name": "shop-frontend",
+  "name": "fashion-webite",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production",
+    "build": "ng build --configuration production --output-path dist/shop --base-href \"/FashionWebsiteUpdated/\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "npm run build && cp -R dist/shop ../backend/public"
+    "deploy": "npm run build && npx angular-cli-ghpages --dir=dist/shop"
   },
   "private": true,
   "dependencies": {

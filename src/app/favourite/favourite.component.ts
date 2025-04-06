@@ -16,6 +16,7 @@ interface FavoriteItem {
   price: number;
   category: string;
   dateAdded: Date;
+  stock: number;
 }
 
 @Component({
@@ -46,26 +47,29 @@ export class FavouriteComponent implements OnInit {
       this.favorites = products.map(product => ({
         id: product._id,
         name: product.name,
-        image: product.image && product.image.length > 0 ? product.image[0] : 'default-image.jpg',
+        image: product.image?.[0] || 'default-image.jpg',
         price: product.price,
         category: product.category,
+        stock: product.stock, // Add stock here
         dateAdded: product.dateAdded ? new Date(product.dateAdded) : new Date(),
-        color: product.selectedColor || (product.colors && product.colors[0]) || 'default' // Add this
+        color: product.selectedColor || product.colors?.[0] || 'default'
       }));
       this.cdr.detectChanges();
     });
   
+    // Update this mapping too
     this.favorites = this.addFavoriteService.getLove().map(product => ({
       id: product._id,
       name: product.name,
-      image: product.image && product.image.length > 0 ? product.image[0] : 'default-image.jpg',
+      image: product.image?.[0] || 'default-image.jpg',
       price: product.price,
       category: product.category,
+      stock: product.stock, // Add stock here
       dateAdded: product.dateAdded ? new Date(product.dateAdded) : new Date(),
-      color: product.selectedColor || (product.colors && product.colors[0]) || 'default' // Add this
+      color: product.selectedColor || product.colors?.[0] || 'default'
     }));
   }
-  
+    
   addToCartAndRemove(item: FavoriteItem): void {
     const cartItem = {
       productID: item.id,

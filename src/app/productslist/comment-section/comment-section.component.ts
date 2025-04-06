@@ -194,14 +194,20 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
     }
 
     onCommentSubmit(): void {
-        console.log('Submitting new comment:', this.newComment.text, 'with rating:', this.selectedRating);
-        if (this.productId && this.newComment.text) {
-            this._singleProductService.sendComment(this.productId, this.newComment.text, null, this.selectedRating);
+        const text = this.newComment.text; // Capture the current text
+        const rating = this.selectedRating; // Capture the current rating
+        console.log('Submitting new comment:', text, 'with rating:', rating);
+        if (this.productId && text) {
+            this._singleProductService.joinRoom(this.productId);
+            setTimeout(() => {
+                this._singleProductService.sendComment(this.productId, text, null, rating);
+            }, 100);
             this.newComment.text = '';
             this.selectedRating = 0;
         }
     }
-
+    
+    
     toggleReplyForm(comment: Comment): void {
         comment.showReplyForm = !comment.showReplyForm;
     }

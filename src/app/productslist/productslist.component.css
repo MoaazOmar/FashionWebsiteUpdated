@@ -724,3 +724,23 @@ html.dark .tab-content ul {
   object-fit: cover;
 }
 
+.in-stock {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.out-stock {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+.disabled-btn {
+  background-color: #6c757d !important;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.quantity-control button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

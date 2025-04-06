@@ -62,11 +62,11 @@ import { LoadingService } from './services/loading.service';
 import { SliderFashionComponent } from './shopping/slider-fashion/slider-fashion.component';
 import { NotfoundComponent } from './notfound/notfound.component'; 
 import { TokenInterceptor } from './interceptors/token';
+import { environment } from '../environments/environment.prod';
+
 const config: SocketIoConfig = { 
-  url: 'http://localhost:3000', 
-  options: { 
-    withCredentials: true 
-  } 
+  url: environment.socketUrl,
+  options: { withCredentials: true }
 };
 
 @NgModule({

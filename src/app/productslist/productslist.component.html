@@ -1,13 +1,13 @@
-<div class="product-container container py-4 py-lg-5 px-3 px-lg-4" style="max-width: 1200px;" *ngIf="product;">
+<div class="product-container container" style="max-width: 1200px;" *ngIf="product;">
   <header>
     <p class="prem">Premium Designer Outfit</p>
     <div class="link-product">
       <ol>
         <li [routerLink]="['/']">Home</li> /
-        <li [routerLink]="['/shopping']" [queryParams]="{ gender: product.gender ? product.gender.toString() : '' }">
+        <li [routerLink]="['/products']" [queryParams]="{ gender: product.gender ? product.gender.toString() : '' }">
           {{ product.gender }}
         </li> /
-        <li [routerLink]="['/shopping']"
+        <li [routerLink]="['/products']"
           [queryParams]="{ category: product.category ? product.category.toString().toLowerCase() : '' }">
           {{ product.category }}
         </li> /
@@ -15,7 +15,7 @@
       </ol>
     </div>
   </header>
-
+  <h1>hello there</h1>
   <div class="grid">
     <!-- Product Images Carousel (Unchanged) -->
     <div class="carousel-wrapper">
@@ -25,14 +25,12 @@
         </div>
       </div>
       <div class="carousel-dots">
-        <button class="carousel-dot" 
-                *ngFor="let img of product.image; let i = index"
-                [class.active]="i === activeDotIndex" 
-                (click)="onDotClick(i)">
+        <button class="carousel-dot" *ngFor="let img of product.image; let i = index"
+          [class.active]="i === activeDotIndex" (click)="onDotClick(i)">
         </button>
       </div>
     </div>
-            
+
     <!-- Product Information -->
     <div>
       <h2 style="margin-bottom: 10px;">{{ product.name }}</h2>
@@ -58,20 +56,14 @@
         <p>
           <strong>Color:</strong>
           <span class="color-swatches">
-            <span
-              *ngFor="let color of product.colors"
-              class="color-swatch"
-              [style.backgroundColor]="color"
-              [class.selected]="product.selectedColor === color"
-              (click)="selectColor(color)"
-              [title]="color"
-            ></span>
+            <span *ngFor="let color of product.colors" class="color-swatch" [style.backgroundColor]="color"
+              [class.selected]="product.selectedColor === color" (click)="selectColor(color)" [title]="color"></span>
           </span>
         </p>
         <p>
           <strong>Stock:</strong>
           <span [ngClass]="{'in-stock': product.stock, 'out-stock': !product.stock}">
-            {{ product.stock ? 'In Stock ✔' : 'Out of Stock ✖' }}
+            {{ product.stock ? 'In Stock (' + product.stock + ') ✔' : 'Out of Stock ✖' }}
           </span>
         </p>
       </div>
@@ -79,8 +71,10 @@
       <!-- Product Actions -->
       <div class="actions">
         <div class="button-group">
-          <button class="add-to-cart" [disabled]="!product.stock" (click)="addToCart()">Add to Cart</button>
-          <!-- Like Button -->
+          <button class="add-to-cart" [disabled]="!product.stock" (click)="addToCart()"
+            [class.disabled-btn]="!product.stock">
+            {{ product.stock ? 'Add to Cart' : 'Out of Stock' }}
+          </button> <!-- Like Button -->
           <button id="product-like-btn" class="action-btn" (click)="onProductLikeDblClick()"
             [ngClass]="{'active-like': productLiked}">
             <i class="fas fa-heart" *ngIf="productLiked"></i>
@@ -185,9 +179,8 @@
         (click)="activeTabGroupTwo = 'detailsCare'">
         Details & Care
       </button>
-      <button class="tab-btn" [class.active]="activeTabGroupTwo === 'reviews'"
-        (click)="activeTabGroupTwo = 'reviews'">
-        Reviews ({{commentsCount}})
+      <button class="tab-btn" [class.active]="activeTabGroupTwo === 'reviews'" (click)="activeTabGroupTwo = 'reviews'">
+        Reviews ({{ commentsCount }})
       </button>
     </div>
   </div>
@@ -227,7 +220,8 @@
         <li>Dry clean optional</li>
       </ul>
       <h4>Shipping & Returns</h4>
-      <h3>Free standard shipping on all orders over $100. Express shipping available for an additional fee. Easy returns within 30 days of delivery. Item must be unworn, unwashed, and with original tags attached.</h3>
+      <h3>Free standard shipping on all orders over $100. Express shipping available for an additional fee. Easy returns
+        within 30 days of delivery. Item must be unworn, unwashed, and with original tags attached.</h3>
     </div>
 
     <div class="product-tab" [class.hidden]="activeTabGroupTwo !== 'reviews'">
