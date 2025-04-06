@@ -53,7 +53,7 @@ export class BrowseCategoriesComponent implements OnInit {
   navigateToShoppingList(category: { name: string; gender: string }) {
     this.router.navigate(['/products'], {
       queryParams: {
-        gender: category.gender.toLowerCase(), // Convert to lowercase for consistency (female, male, special)
+        gender: category.gender,
         category: category.name
       }
     });
