@@ -7,10 +7,10 @@
     <p *ngIf="!suggestions.length && query && !loading">No suggestions found for "{{ query }}"</p>
     <p *ngIf="!query && !loading">Type something to search...</p>
   </div>
-  
+
   <ul *ngIf="suggestions.length && !loading">
-    <li *ngFor="let suggestion of suggestions" [routerLink]="['/products', suggestion._id]">
-      <img [src]="suggestion.image[0]" alt="Product Image" width="50">
+    <li *ngFor="let suggestion of suggestions"  (click)="onSuggestionClick()" [routerLink]="['/products', suggestion._id]">
+      <img [src]="suggestion.image[0]" alt="Product Image" width="50" />
       <span>{{ suggestion.name }}</span>
     </li>
   </ul>

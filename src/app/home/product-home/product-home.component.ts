@@ -11,7 +11,7 @@ import { CartItem } from '../../../interfaces/cart.model';
   styleUrls: ['./product-home.component.css'],
 })
 export class ProductHomeComponent implements OnInit {
-  products: Product[] = []; // Extend Product with optional amount
+  products: Product[] = [];
   selectedCategory: string = '';
   limit: number = 5;
   skip: number = 0;
@@ -25,7 +25,7 @@ export class ProductHomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts(); 
+    this.loadProducts();
     this.route.queryParams.subscribe(params => {
       const gender = params['gender'] || '';
       if (gender !== this.selectedCategory) {
@@ -38,8 +38,8 @@ export class ProductHomeComponent implements OnInit {
   loadProducts(category: string = this.selectedCategory, reset: boolean = false) {
     this.isLoading = true;
     if (reset) {
-        this.products = [];
-        this.skip = 0;
+      this.products = [];
+      this.skip = 0;
     }
     console.log('Loading products - Category:', category, 'Limit:', this.limit, 'Skip:', this.skip);
     this.productsService.getProducts(category, this.limit, this.skip).subscribe({
@@ -51,25 +51,26 @@ export class ProductHomeComponent implements OnInit {
               ...product,
               image: product.image.map(img => `https://holy-althea-moaazomar-463f67fb.koyeb.app/images/${img}`),
               amount: 1,
-              selectedColor: product.colors?.[0] || '' // Default to first color
+              selectedColor: product.colors?.[0] || ''
             })),
           ];
         }
       },
       error: (err) => {
-        console.error('Error fetching products:', err.status, err.error); 
-        this.isLoading = false; 
+        console.error('Error fetching products:', err.status, err.error);
+        this.isLoading = false;
       },
       complete: () => {
         this.isLoading = false;
       },
     });
   }
-selectColor(product: Product, color: string) {
+
+  selectColor(product: Product, color: string) {
     product.selectedColor = color;
   }
 
-selectCategory(category: string) {
+  selectCategory(category: string) {
     this.selectedCategory = category === 'all' ? '' : category;
     this.loadProducts(this.selectedCategory, true);
   }
@@ -99,10 +100,10 @@ selectCategory(category: string) {
       productID: product._id,
       name: product.name,
       price: product.price,
-      image: product.image[0], // Use first image
+      image: product.image[0],
       amount: product.amount || 1,
       color: product.selectedColor || product.colors[0]
-};
+    };
 
     this.cartService.addToCart(cartItem).subscribe({
       next: (response) => {

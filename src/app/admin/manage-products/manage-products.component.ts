@@ -66,16 +66,20 @@ export class ManageProductsComponent implements OnInit {
   }
 
   fetchProducts() {
-    this.adminService.getAllProducts().subscribe((products) => {
-      this.products = products.map(product => ({
-        ...product,
-        image: product.image.map(img => `http://localhost:3000/images/${img}`)
-      }));
-      // Initialize filteredProducts to include all products initially.
-      this.filteredProducts = [...this.products];
-    });
-  }
-  
+    this.adminService.getAllProducts().subscribe({
+      next: (products) => {
+        this.products = products.map(product => ({
+          ...product,
+          image: Array.isArray(product.image)
+            ? product.image.map(img => `https://holy-althea-moaazomar-463f67fb.koyeb.app/images/${img}`)
+            : []
+        }));
+        this.filteredProducts = [...this.products];
+      },
+      error: (err) => {
+        console.error('Error fetching products:', err);
+      }
+    });}  // image: product.image.map(img => `https://holy-althea-moaazomar-463f67fb.koyeb.app/images/${img}`)
   openEditModal(product: Product) {
     this.selectedProduct = product;
     this.editForm.patchValue({

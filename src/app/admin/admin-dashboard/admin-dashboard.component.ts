@@ -14,7 +14,7 @@ export class AdminDashboardComponent implements OnInit {
   topProducts: Product[] = [];
   isLoading = true;
   error: string | null = null;
-  constructor(private dashboardService: AdminService) {}
+  constructor(private dashboardService: AdminService) { }
 
   ngOnInit(): void {
     this.loadDashboardData();
@@ -30,7 +30,7 @@ export class AdminDashboardComponent implements OnInit {
       next: (stats) => {
         console.log('Received stats:', stats);
         this.stats = stats;
-      
+
       },
       error: (err) => {
         this.error = 'Failed to load dashboard stats. Please try again later.';
@@ -44,26 +44,23 @@ export class AdminDashboardComponent implements OnInit {
   loadRecentOrders(): void {
     this.dashboardService.getRecentOrders().subscribe({
       next: (orders) => {
-        console.log('Recent Orders Response:', orders);
         this.recentOrders = orders.slice(0, 5);
       },
       error: (err) => {
-        console.error('Error fetching recent orders:', err);
-        this.error = 'Failed to load recent orders. Please try again later.';
-      },
-      complete: () => {
-        console.log('Recent orders fetch complete');
-        this.isLoading = false; // Set isLoading to false after all data is loaded
+        console.error('Detailed error:', err);
+        this.error = err.error?.message || 'Failed to load recent orders';
+        if (err.error?.error) {
+          console.error('Server error details:', err.error.error);
+        }
       }
     });
-  }
-  loadTopSellingProducts(): void {
+  } loadTopSellingProducts(): void {
     this.dashboardService.getTopSellingProducts().subscribe({
       next: (products) => {
         console.log('Top Selling Products Response:', products);
         this.topProducts = products;
         console.log('Assigned topProducts:', this.topProducts);
-        
+
       },
       error: (err) => {
         console.error('Error fetching top selling products:', err);

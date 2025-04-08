@@ -18,11 +18,10 @@ export class AdminService {
   }
 
   getRecentOrders(): Observable<Order[]> {
-    return this.http.get<{ orders: Order[] }>(`${this.apiUrl}/orders`, { withCredentials: true }).pipe(
-      map(response => response.orders)
-    );
-  }
-
+    return this.http.get<Order[]>(`${this.apiUrl}/orders`, { 
+        withCredentials: true 
+    });
+}
   getTopSellingProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/top-selling-products`, { withCredentials: true });
   }
@@ -32,11 +31,9 @@ export class AdminService {
   }
 
   getAllProducts(): Observable<Product[]> {
-    return this.http.get<{ products: Product[] }>(`${this.apiUrl}/productList`, { withCredentials: true }).pipe(
-      map(response => response.products)
-    );
+    return this.http.get<Product[]>(`${this.apiUrl}/productList`, { withCredentials: true });
   }
-
+  
   updateProduct(productId: string, formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/productList/update`, formData, { withCredentials: true });
   }

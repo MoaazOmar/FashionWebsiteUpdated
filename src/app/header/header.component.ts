@@ -120,6 +120,7 @@ export class HeaderComponent implements OnInit {
   goToSearchComponent() {
     this.router.navigate(['/search-results', this.searchQuery]);
     this.isClicked = false;
+    this.searchQuery = ''; 
   }
 
   logout(): void {
@@ -132,17 +133,28 @@ export class HeaderComponent implements OnInit {
   headerScrolled() {
     const selectHeader = this.el.nativeElement.querySelector('#header');
     const backtoTop = this.el.nativeElement.querySelector('.back-to-top');
-    if (selectHeader && backtoTop) {  // Added backtoTop check
+    if (selectHeader && backtoTop) {
       if (window.scrollY > 100) {
         this.renderer.addClass(selectHeader, 'header-scrolled');
         this.renderer.addClass(backtoTop, 'active');
+        // Add scroll class to profile description
+        if (window.innerWidth <= 768) {
+          const profileDesc = this.el.nativeElement.querySelector('.profile-description');
+          if (profileDesc) {
+            this.renderer.addClass(profileDesc, 'scrolled');
+          }
+        }
       } else {
         this.renderer.removeClass(selectHeader, 'header-scrolled');
         this.renderer.removeClass(backtoTop, 'active');
+        // Remove scroll class from profile description
+        const profileDesc = this.el.nativeElement.querySelector('.profile-description');
+        if (profileDesc) {
+          this.renderer.removeClass(profileDesc, 'scrolled');
+        }
       }
     }
-  }
-  
+  }  
     scrollToTop(): void {
     window.scrollTo({
       top: 0,
@@ -156,6 +168,10 @@ export class HeaderComponent implements OnInit {
 
   closeMenu(): void {
     this.isMenuOpen = false;
+  }
+  onSearchClosed() {
+    this.isClicked = false;
+    this.searchQuery = '';
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { SuggestionSearchService } from '../../services/suggestion-search.service';
 import { Product } from '../../../interfaces/product.model';
 
@@ -13,7 +13,7 @@ export class SearchinputComponent implements OnChanges , OnInit {
   suggestions: Product[] = [];
   productDisplay = 10
   loading: boolean = false; // Add loading state
-
+  @Output() searchClosed = new EventEmitter<void>();
   constructor(private suggestionService: SuggestionSearchService,private renderer: Renderer2) {}
   ngOnInit(): void {
     this.headerScrolled();
@@ -65,5 +65,9 @@ export class SearchinputComponent implements OnChanges , OnInit {
         this.loading = false;
       }
     });
-  }  
+  } 
+  onSuggestionClick() {
+    this.searchClosed.emit();
+  }
+ 
 }

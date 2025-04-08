@@ -1,77 +1,192 @@
 #newsletter {
+    padding: 80px 20px;
     position: relative;
-    padding: 0 100px;
-    display: flex;
-    justify-content: space-between;
+    overflow: hidden;
+    background: #0a0e17;
+  }
+  
+  .newsletter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .gradient-backdrop {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: linear-gradient(45deg, 
+      rgba(255,0,82,0.15) 0%, 
+      rgba(10,14,23,1) 30%, 
+      rgba(10,14,23,1) 70%, 
+      rgba(255,0,82,0.15) 100%);
+    transform: rotate(-5deg);
+    top: -25%;
+    left: -25%;
+  }
+  
+  .content-wrapper {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
     align-items: center;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 30px rgba(255, 0, 82, 0.1);
+  }
+  
+  .text-content {
+    position: relative;
+    color: white;
+  }
+  
+  .text-content h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ff0052, #ff7b00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .highlight {
+    font-size: 2rem;
+    line-height: 1.3;
+    margin-bottom: 2rem;
+  }
+  
+  .highlight span {
+    font-size: 1.2rem;
+    color: #ff0052;
+  }
+  
+  .offer-box {
+    position: relative;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 0, 82, 0.3);
+    margin-top: 30px;
+  }
+  
+  .offer-badge {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: #ff0052;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .offer-text {
+    font-size: 1.4rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+  
+  .newsletter-form {
+    position: relative;
+  }
+  
+  .input-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
-    width: 98.7vw;
-    height: 120px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4); /* Changed to a dark shadow for better contrast */
-    color: #2A2A2A; /* Dark gray text for better visibility */
-}
-
-.newsletter-box {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.newsletter-box .fa-envelope-open {
-    font-size: 3em;
-    color: #6B4F4B; /* Elegant chestnut brown for a fashion-forward touch */
-}
-
-#newsletter h4 {
-    text-transform: uppercase;
-    font-size: 1.2em;
-    font-weight: 500;
-    letter-spacing: 1px;
-    color: #101820; /* Midnight black for clear, bold headings */
-}
-
-#newsletter p {
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    color: #28527A; /* Muted teal for a soft contrast */
-}
-
-#newsletter .discount {
-    color: #A67C5B; /* Warm beige for a sophisticated accent */
-    font-size: 4em;
-    font-weight: 500;
-    margin-left: 10px;
-}
-
-#newsletter form {
-    display: flex;
-    justify-content: flex-end;
-}
-
-#newsletter form input[type='text'] {
+  }
+  
+  .input-group i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  input[type="email"] {
+    width: 100%;
+    padding: 18px 20px 18px 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="email"]:focus {
+    border-color: #ff0052;
+    background: rgba(255, 0, 82, 0.05);
     outline: none;
-    border: 1px solid #49678D; /* Steel blue border for subtle elegance */
-    width: 250px; /* Adjusted width to fit better */
-    padding: 10px 20px;
-    background: #F0F8FF; /* Light bluish-white for a gentle background */
-    color: #2A2A2A; /* Dark gray text for input field */
-}
-
-#newsletter form input[type='submit'] {
-    outline: none;
-    border: 1px solid #6B4F4B; /* Chestnut brown for contrast */
-    padding: 10px 30px;
-    background: #A67C5B; /* Warm beige background for a stylish look */
-    color: #F0F8FF; /* Light bluish-white text for visibility */
-    transition: 0.5s;
-    text-transform: uppercase;
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 18px 25px;
+    background: linear-gradient(45deg, #ff0052, #ff7b00);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
     cursor: pointer;
-}
-
-#newsletter form input[type='submit']:hover {
-    background-color: #101820; /* Midnight black for hover effect */
-    color: #A67C5B; /* Warm beige text to maintain contrast */
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 0, 82, 0.4);
+  }
+  
+  .disclaimer {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .content-wrapper {
+      grid-template-columns: 1fr;
+      padding: 30px;
+    }
+    
+    .text-content h3 {
+      font-size: 2rem;
+    }
+    
+    .highlight {
+      font-size: 1.5rem;
+    }
+    
+    .offer-text {
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .content-wrapper {
+      padding: 20px;
+    }
+    
+    .text-content h3 {
+      font-size: 1.8rem;
+    }
+    
+    input[type="email"] {
+      padding: 15px 20px 15px 45px;
+    }
+    
+    button[type="submit"] {
+      padding: 15px 20px;
+    }
+  }

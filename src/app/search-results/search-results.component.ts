@@ -38,7 +38,6 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private _suggestionSearchService: SuggestionSearchService,
-    private elementRef: ElementRef,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -51,7 +50,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       distinctUntilChanged(([prevParams, prevQuery], [currParams, currQuery]) => {
         return prevParams.get('query') === currParams.get('query') &&
                JSON.stringify(prevQuery) === JSON.stringify(currQuery);
-      }), // Prevent duplicate calls for unchanged params
+      }),
       takeUntil(this.destroy$)
     ).subscribe(([params, queryParams]) => {
       this.query = params.get('query') || '';
@@ -87,8 +86,6 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       category: this.selectedCategories.length ? this.selectedCategories.join(',') : null,
       gender: this.selectedGenders.length ? this.selectedGenders.join(',') : null
     };
-
-    console.log('Updating URL params:', queryParams);
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: this.cleanParams(queryParams),
@@ -106,10 +103,10 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     return cleaned;
   }
 
-  setItemsPerPage(option: number): void {
-    this.itemsPerPage = option;
+  setItemsPerPage(option: any): void {
+    this.itemsPerPage = parseInt(option);
     this.currentPage = 1;
-    this.updateUrlParams(); // Only update URL, fetch will happen via subscription
+    this.updateUrlParams();
   }
 
   changeTheColor(colors: string[]): void {
@@ -145,19 +142,12 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       ...(this.selectedSort && { sort: this.selectedSort }),
       ...(this.selectedGenders.length && { gender: this.selectedGenders })
     };
-    gsap.config({
-      autoSleep: 60,
-      force3D: false,
-      nullTargetWarn: false
-    });
-
-    console.log('Fetching with:', { query: this.query, filters, page, limit: this.itemsPerPage });
+    gsap.config({ autoSleep: 60, force3D: false, nullTargetWarn: false });
 
     this._suggestionSearchService
       .getSuggestion(this.query, filters, page, this.itemsPerPage)
       .subscribe({
         next: (response) => {
-          console.log('Raw response:', response);
           this.results = response.suggestions.map((product: Product) => ({
             ...product,
             image: Array.isArray(product.image)
@@ -168,7 +158,6 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
           this.FilteringColors = response.colorsWithCounts || [];
           this.totalCategories = response.categoriesWithCounts || [];
           this.currentPage = response.currentPage || page;
-
           this.isLoading = false;
           this.cdr.detectChanges();
 
@@ -199,37 +188,70 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     const totalPages = Math.ceil(this.totalSearchProducts / this.itemsPerPage);
     if (newPage >= 1 && newPage <= totalPages) {
       this.currentPage = newPage;
-      this.updateUrlParams(); // Only update URL, fetch will happen via subscription
+      this.updateUrlParams();
     }
   }
 
   openDetail(product: Product): void {
     this.selectedProduct = product;
-    gsap.to(this.detailPanel.nativeElement, {
-      x: 0,
-      duration: 0.5,
-      ease: 'power2.out'
-    });
-    gsap.to(this.listPanel.nativeElement, {
-      width: '60%',
-      duration: 0.5,
-      ease: 'power2.out'
-    });
+    if (this.listPanel && this.detailPanel) {
+      const tl = gsap.timeline();
+      tl.to(this.detailPanel.nativeElement, {
+        x: 0,
+        duration: 0.5,
+        ease: 'power3.out'
+      });
+      tl.to(this.listPanel.nativeElement, {
+        width: '60%',
+        duration: 0.5,
+        ease: 'power3.out'
+      }, '-=0.5');
+      tl.from('.detail-image-container', {
+        opacity: 0,
+        x: -30,
+        duration: 0.4,
+        ease: 'back.out(1.7)'
+      }, '-=0.3');
+      tl.from('.detail-info > *', {
+        opacity: 0,
+        y: 20,
+        duration: 0.4,
+        stagger: 0.1,
+        ease: 'power2.out'
+      }, '-=0.2');
+    }
   }
 
   closeDetail(): void {
-    gsap.to(this.detailPanel.nativeElement, {
-      x: '100%',
-      duration: 0.5,
-      ease: 'power2.in',
-      onComplete: () => {
-        this.selectedProduct = null;
-      }
-    });
-    gsap.to(this.listPanel.nativeElement, {
-      width: '100%',
-      duration: 0.5,
-      ease: 'power2.out'
-    });
+    if (this.listPanel && this.detailPanel) {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          this.selectedProduct = null;
+          this.cdr.detectChanges();
+        }
+      });
+      tl.to('.detail-info > *', {
+        opacity: 0,
+        y: 20,
+        duration: 0.3,
+        stagger: 0.05,
+        ease: 'power2.in'
+      });
+      tl.to(this.detailPanel.nativeElement, {
+        x: '100%',
+        duration: 0.5,
+        ease: 'power3.in'
+      }, '-=0.1');
+      tl.to(this.listPanel.nativeElement, {
+        width: '100%',
+        duration: 0.5,
+        ease: 'power3.out'
+      }, '-=0.4');
+    }
+  }
+
+  navigateToProduct(productId: string): void {
+    this.router.navigate(['/products', productId]);
+    this.closeDetail(); // Close the detail panel after navigation
   }
 }

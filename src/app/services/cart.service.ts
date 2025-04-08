@@ -26,6 +26,9 @@ export class CartService {
     this.currentCartItems.next(items);
   }
 
+
+
+
   addToCart(cartItem: CartItem): Observable<any> {
     if (!this.authService.isLoggedIn()) {
       this.notificationService.showNotification("Please log in to add items to cart", 'error');
