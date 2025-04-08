@@ -331,6 +331,7 @@ header:has(.search-container.active) .util {
 }
 
 .hamburger {
+  margin-top: 7px;
   display: none;
   width: 64px;
   height: 64px;

@@ -22,6 +22,7 @@ import { ManageOrdersComponent } from './admin/manage-orders/manage-orders.compo
 import { AdminGuard } from './guards/admin.guard';
 import { NonAdminGuard } from './guards/nonadmin--skip-tests.guard';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [NonAdminGuard] },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'products/:id', component: ProductslistComponent, canActivate: [NonAdminGuard] },
   { path: 'about', component: AboutComponent, canActivate: [NonAdminGuard] },
   { path: 'love', component: FavouriteComponent, canActivate: [NonAdminGuard] },
+  {path:'contact', component:ContactComponent , canActivate: [NonAdminGuard]},
   {
     path: 'admin',
     component: NavbarAdminComponent,
